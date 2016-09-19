@@ -11,6 +11,9 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 import PetCell from './PetCell';
+import PetScreen from './PetScreen';
+
+import dismissKeyboard from 'dismissKeyboard';
 
 const API_KEY = 'cb55e117215c6eb73506d7164b0a3b6d';
 
@@ -78,6 +81,23 @@ export default class App extends Component {
     return this.state.dataSource.cloneWithRows(pets);
   }
 
+  selectPet = (pet: Object) => {
+    if (Platform.OS === 'ios') {
+      this.props.navigator.push({
+        title: pet.name,
+        component: PetScreen,
+        passProps: {pet},
+      });
+    } else {
+      dismissKeyboard();
+      this.props.navigator.push({
+        title: pet.name,
+        name: 'pet',
+        pet: pet,
+      });
+    }
+  }
+
   onEndReached = () => {
     // We're already fetching
     if (this.state.isLoadingTail) {
@@ -98,6 +118,7 @@ export default class App extends Component {
     return (
       <PetCell
         key={pet.id}
+        onSelect={() => this.selectPet(pet)}
         onHighlight={() => highlightRowFunc(sectionID, rowID)}
         onUnhighlight={() => highlightRowFunc(null, null)}
         pet={pet}
