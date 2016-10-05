@@ -32,7 +32,6 @@ export default class PetScreen extends Component {
           <Text>Breeds: {getBreeds(pet)}</Text>
           <Text>Location: {pet.contact.city}, {pet.contact.state}, {pet.contact.zip}</Text>
           <Text>Email: {pet.contact.email}</Text>
-          <Text>Phone: {pet.contact.phone}</Text>
           <Text>{' '}</Text>
           <Text style={{color: 'blue'}} onPress={() => Linking.openURL(url)}>
             {url}
@@ -51,9 +50,6 @@ const styles = StyleSheet.create({
   imageContainer: {
     backgroundColor: '#dddddd',
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
   },
   petImage: {
     position: 'absolute',
