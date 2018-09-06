@@ -47,7 +47,7 @@ export default class PetScreen extends Component {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    flex: 1,
+    flexGrow: 1,
   },
   imageContainer: {
     backgroundColor: '#dddddd',
