@@ -13,15 +13,17 @@ import getImage from './getImage';
 import getBreeds from './getBreeds';
 
 export default class PetScreen extends Component {
+  state = {width: 0,height:0};
 
   render({ pet } = this.props) {
     const image = getImage(pet);
     const url = `https://www.petfinder.com/petdetail/${pet.id}`;
+    Image.getSize(image, (width, height) => { this.setState({ width, height }) });
     return (
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.imageContainer}>
           {image
-            ? <Image source={image} style={styles.petImage} />
+            ? <Image source={image} style={{width:this.state.width, height:this.state.height}} />
             : <View style={styles.noImage}><Text style={styles.noImageText}>No image</Text></View>
           }
         </View>
@@ -50,13 +52,6 @@ const styles = StyleSheet.create({
   imageContainer: {
     backgroundColor: '#dddddd',
     flex: 1,
-  },
-  petImage: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
   },
   noImage: {
     flex: 1,
