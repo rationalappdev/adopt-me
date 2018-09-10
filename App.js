@@ -4,16 +4,14 @@ import React, { Component } from 'react';
 import {
   ActivityIndicator,
   ListView,
-  Platform,
   StyleSheet,
   Text,
   View
 } from 'react-native';
+import {createStackNavigator} from 'react-navigation';
 import _ from 'lodash';
 import PetCell from './PetCell';
 import PetScreen from './PetScreen';
-
-import dismissKeyboard from 'dismissKeyboard';
 
 const API_KEY = 'cb55e117215c6eb73506d7164b0a3b6d';
 
@@ -33,7 +31,10 @@ const convert = (obj) => {
 
 let resultsCache = [];
 
-export default class App extends Component {
+class App extends Component {
+  static navigationOptions = {
+    title: 'Adopt Me',
+  };
 
   state = {
     isLoading: false,
@@ -82,20 +83,10 @@ export default class App extends Component {
   }
 
   selectPet = (pet: Object) => {
-    if (Platform.OS === 'ios') {
-      this.props.navigator.push({
-        title: pet.name,
-        component: PetScreen,
-        passProps: {pet},
-      });
-    } else {
-      dismissKeyboard();
-      this.props.navigator.push({
-        title: pet.name,
-        name: 'pet',
-        pet: pet,
-      });
-    }
+    this.props.navigation.navigate('PetScreen', {
+      pet: pet,
+      title: pet.name
+    })
   }
 
   onEndReached = () => {
@@ -157,9 +148,20 @@ export default class App extends Component {
 
 }
 
+export default createStackNavigator({
+    Home: {
+      screen: App,
+    },
+    PetScreen: {
+      screen: PetScreen,
+    },
+  },
+  {
+    initialRouteName: 'Home',
+  });
+
 const styles = StyleSheet.create({
   container: {
-    marginTop: Platform.OS === 'ios' ? 64 : 0,
     flex: 1,
     backgroundColor: 'white',
   },
